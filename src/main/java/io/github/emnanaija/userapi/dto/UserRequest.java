@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Data                   // génère getters, setters, toString, equals, hashCode
-@NoArgsConstructor      // constructeur sans arguments
-@AllArgsConstructor     // constructeur avec tous les arguments
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @AdultFrenchResident
 public class UserRequest {
 
@@ -28,7 +28,7 @@ public class UserRequest {
     @NotBlank(message = "country obligatoire")
     private String country;
 
-    @Pattern(regexp = "^(?:\\+?\\d{8,15})?$", message = "phone invalide")
+    @Pattern(regexp = "^(0\\d{9}|\\+33\\d{9})$", message = "Numéro français invalide")
     private String phone;
 
     private String gender;

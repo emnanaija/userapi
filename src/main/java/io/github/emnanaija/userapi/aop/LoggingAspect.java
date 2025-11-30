@@ -24,8 +24,12 @@ public class LoggingAspect {
     @Pointcut("execution(* io.github.emnanaija.userapi.service.*.*(..))")
     public void serviceMethods() {}
 
-    // Pointcut combiné : contrôleurs et services
-    @Pointcut("controllerMethods() || serviceMethods()")
+    // Pointcut pour le gestionnaire d'exceptions
+    @Pointcut("execution(* io.github.emnanaija.userapi.exception.*.*(..))")
+    public void exceptionHandlerMethods() {}
+
+    // Pointcut combiné : contrôleurs, services et gestionnaire d'exceptions
+    @Pointcut("controllerMethods() || serviceMethods() || exceptionHandlerMethods()")
     public void applicationMethods() {}
 
     @Around("applicationMethods()")
@@ -63,4 +67,5 @@ public class LoggingAspect {
         }
     }
 }
+
 

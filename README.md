@@ -6,7 +6,17 @@ Spring Boot API - registration and retrieval of users (H2 embedded database)
 
 Prerequisites: Java 17, Maven
 
-mvn spring-boot:runApp on http://localhost:8078
+```bash
+mvn clean package
+```
+
+## Run
+
+```bash
+mvn spring-boot:run
+```
+
+App on http://localhost:8078
 
 H2 console: http://localhost:8078/h2-console
 - JDBC URL: `jdbc:h2:mem:testdb`
@@ -75,15 +85,40 @@ Get user by ID
 {
 "error": "Utilisateur non trouvé"
 }
+## Postman Collection
+
+Import the `postman_collection.json` file into Postman to test all endpoints.
+
+The collection includes:
+- Create user (valid cases)
+- Create user (validation error cases)
+- Get user by ID (valid and not found)
+
+**Setup:**
+1. Open Postman
+2. Click "Import"
+3. Select `postman_collection.json`
+4. The collection will use `http://localhost:8078` as base URL (configurable via variable)
+
 ## Tests
 
-
-### Run all testsash
+### Run all tests
+```bash
 mvn test
+```
+
 ### Run specific test class
+```bash
 mvn test -Dtest=UserServiceValidationTest
-mvn test -Dtest=UserControllerIntegrationTest### Run tests with coverage
-mvn clean test### Test Structure
+mvn test -Dtest=UserControllerIntegrationTest
+```
+
+### Run tests with coverage
+```bash
+mvn clean test
+```
+
+### Test Structure
 - **Unit tests** (`UserServiceValidationTest.java`): Test service layer with mocked repository
     - Validation tests (age, country, date, gender)
     - Success cases

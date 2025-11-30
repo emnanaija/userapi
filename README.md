@@ -87,18 +87,27 @@ Get user by ID
 }
 ## Postman Collection
 
-Import the `postman_collection.json` file into Postman to test all endpoints.
+A Postman collection file (`postman_collection.json`) is provided in the root directory to test all API endpoints.
 
-The collection includes:
-- Create user (valid cases)
-- Create user (validation error cases)
-- Get user by ID (valid and not found)
+### Import the Collection
 
-**Setup:**
 1. Open Postman
-2. Click "Import"
-3. Select `postman_collection.json`
-4. The collection will use `http://localhost:8078` as base URL (configurable via variable)
+2. Click "Import" button (top left)
+3. Select the `postman_collection.json` file
+4. The collection "User API" will appear in your workspace
+
+### Collection Contents
+
+The collection includes 10 requests covering:
+- ✅ Create user (valid cases with all fields, without phone, without gender)
+- ✅ Create user (validation error cases: under 18, non-French, missing fields, invalid gender/phone)
+- ✅ Get user by ID (valid and not found cases)
+
+### Configuration
+
+- The collection uses a variable `baseUrl` set to `http://localhost:8078`
+- To change the base URL: Click on the collection → "Variables" tab → Modify `baseUrl` value
+- All requests automatically use this variable
 
 ## Tests
 

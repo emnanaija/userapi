@@ -3,6 +3,8 @@ package io.github.emnanaija.userapi.service;
 import io.github.emnanaija.userapi.dto.UserRequest;
 import io.github.emnanaija.userapi.dto.UserResponse;
 import io.github.emnanaija.userapi.entity.UserEntity;
+import io.github.emnanaija.userapi.enums.Gender;
+import io.github.emnanaija.userapi.exception.ResourceNotFoundException;
 import io.github.emnanaija.userapi.repository.UserRepository;
 import io.github.emnanaija.userapi.validation.AdultFrenchResident;
 import jakarta.validation.ConstraintViolation;
@@ -11,11 +13,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 class UserServiceValidationTest {
@@ -145,6 +149,59 @@ class UserServiceValidationTest {
         assertEquals("MALE", response.getGender());
         assertEquals("France", response.getCountry());
         assertEquals(LocalDate.of(1990, 1, 1), response.getBirthdate());
+    }
+
+    // -----------------------------
+    // Tests pour getUser(Long id)
+    // -----------------------------
+
+    @Test
+    void shouldGetUserByIdSuccessfully() {
+        // Créer un utilisateur mocké
+        UserEntity mockEntity = new UserEntity();
+        mockEntity.setId(1L);
+        mockEntity.setUserName("Jean");
+        mockEntity.setBirthDate(LocalDate.of(1990, 1, 1));
+        mockEntity.setCountry("France");
+        mockEntity.setPhoneNumber("0123456789");
+        mockEntity.setGender(Gender.MALE);
+
+        // Mock du repository
+        when(userRepository.findById(1L)).thenReturn(Optional.of(mockEntity));
+
+        // Appel du service
+        UserResponse response = userService.getUser(1L);
+
+        // Vérifications
+        assertNotNull(response);
+        assertEquals(1L, response.getId());
+        assertEquals("Jean", response.getUsername());
+        assertEquals(LocalDate.of(1990, 1, 1), response.getBirthdate());
+        assertEquals("France", response.getCountry());
+        assertEquals("0123456789", response.getPhone());
+        assertEquals("MALE", response.getGender());
+    }
+
+    @Test
+    void shouldThrowResourceNotFoundExceptionWhenUserNotFound() {
+        // Mock du repository pour retourner un Optional vide
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        // Vérifier que l'exception est lancée
+        assertThrows(ResourceNotFoundException.class, () -> userService.getUser(999L));
+    }
+
+    @Test
+    void shouldThrowResourceNotFoundExceptionWithCorrectMessage() {
+        // Mock du repository pour retourner un Optional vide
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        // Vérifier que l'exception est lancée avec le bon message
+        ResourceNotFoundException exception = assertThrows(
+                ResourceNotFoundException.class,
+                () -> userService.getUser(999L)
+        );
+        assertEquals("Utilisateur non trouvé", exception.getMessage());
     }
 
 }

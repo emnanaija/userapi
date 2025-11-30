@@ -25,7 +25,8 @@ Create a new user
 "country": "France",
 "phone": "0123456789",
 "gender": "MALE"
-}**Response:** 201 Created
+}
+**Response:** 201 Created
 {
 "id": 1,
 "username": "JeanDupont",
@@ -33,7 +34,8 @@ Create a new user
 "country": "France",
 "phone": "0123456789",
 "gender": "MALE"
-}### GET /api/users/{id}
+}
+### GET /api/users/{id}
 Get user by ID
 
 **Response:** 200 OK
@@ -44,10 +46,12 @@ Get user by ID
 "country": "France",
 "phone": "0123456789",
 "gender": "MALE"
-}**Response:** 404 Not Found (if user doesn't exist)son
+}
+**Response:** 404 Not Found (if user doesn't exist)son
 {
 "error": "Utilisateur non trouvé"
-}## Validation Rules
+}
+## Validation Rules
 
 - **Username**: Required (not blank)
 - **Birthdate**: Required, must be in the past, user must be >= 18 years old
@@ -62,7 +66,8 @@ Get user by ID
 "username": "username obligatoire",
 "country": "Seuls les résidents français peuvent s'inscrire",
 "birthdate": "L'utilisateur doit être majeur (>=18 ans)"
-}### 400 Bad Request - Invalid Gender
+}
+### 400 Bad Request - Invalid Gender
 {
 "error": "Gender invalide : INVALID"
 }
@@ -72,7 +77,6 @@ Get user by ID
 }
 ## Tests
 
-## Tests
 
 ### Run all testsash
 mvn test

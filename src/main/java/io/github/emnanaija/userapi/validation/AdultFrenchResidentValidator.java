@@ -12,13 +12,22 @@ public class AdultFrenchResidentValidator implements ConstraintValidator<AdultFr
     public boolean isValid(UserRequest req, ConstraintValidatorContext ctx) {
         if (req == null) return true;
         boolean ok = true;
-        // check country contains "france" or iso "FR"
+        // check country is exactly "France" or ISO code "FR" (case insensitive)
         String country = req.getCountry();
-        if (country == null || !country.toLowerCase().contains("fr")) {
+        if (country == null) {
             ctx.disableDefaultConstraintViolation();
-            ctx.buildConstraintViolationWithTemplate("Seuls les résidents français peuvent s'inscrire")
+            ctx.buildConstraintViolationWithTemplate("country obligatoire")
                     .addPropertyNode("country").addConstraintViolation();
             ok = false;
+        } else {
+            String countryLower = country.toLowerCase().trim();
+            // Accept "france" or "fr" (ISO code)
+            if (!countryLower.equals("france") && !countryLower.equals("fr")) {
+                ctx.disableDefaultConstraintViolation();
+                ctx.buildConstraintViolationWithTemplate("Seuls les résidents français peuvent s'inscrire")
+                        .addPropertyNode("country").addConstraintViolation();
+                ok = false;
+            }
         }
         if (req.getBirthdate() == null) {
             ctx.disableDefaultConstraintViolation();

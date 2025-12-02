@@ -2,6 +2,7 @@ package io.github.emnanaija.userapi.dto;
 
 
 import io.github.emnanaija.userapi.validation.AdultFrenchResident;
+import io.github.emnanaija.userapi.validation.ValidGender;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -31,5 +32,6 @@ public class UserRequest {
     @Pattern(regexp = "^(0\\d{9}|\\+33\\d{9})$", message = "Numéro français invalide")
     private String phone;
 
+    @ValidGender
     private String gender;
 }

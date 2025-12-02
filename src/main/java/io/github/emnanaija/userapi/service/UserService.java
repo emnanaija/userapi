@@ -32,13 +32,10 @@ public class UserService {
         entity.setCountry(request.getCountry());
         entity.setPhoneNumber(request.getPhone());
 
-        // Gestion du genre
-        if (request.getGender() != null && !request.getGender().isEmpty()) {
-            try {
-                entity.setGender(Gender.valueOf(request.getGender().toUpperCase()));
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Gender invalide : " + request.getGender());
-            }
+        // Gestion du genre (déjà validé par @ValidGender au niveau DTO)
+        if (request.getGender() != null && !request.getGender().trim().isEmpty()) {
+            // La validation a déjà été faite par Bean Validation, donc on peut convertir directement
+            entity.setGender(Gender.valueOf(request.getGender().toUpperCase().trim()));
         }
 
         // Sauvegarde dans la base
